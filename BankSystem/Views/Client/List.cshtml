@@ -1,0 +1,66 @@
+﻿@model List<TbClient>
+
+
+
+<div class="container-fluid page-body-wrapper">
+    <div class="main-panel">
+        <div class="content-wrapper">
+            <div class="page-header">
+              
+                    <a class="app-page" asp-area="" asp-controller="Application" asp-action="Index">
+                        <i class="mdi mdi-arrow-left-bold-circle menu-icon"></i>
+                        Application Page
+                    </a>
+             
+                <nav aria-label="breadcrumb">
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a asp-controller="Client" asp-action="Add">Clients</a></li>
+                     
+                    </ol>
+                </nav>
+            </div>
+
+            <div class="card">
+                <div class="card-body">
+                    <h4 class="card-title">Clients List</h4>
+                    <div class="row">
+                        <div class="col-12">
+
+                            <a asp-area="Admin" asp-controller="Client" asp-action="Add" class="btn btn-success btn-fw mb-3">
+                                <i class="mdi mdi-plus"></i> Add New client
+                            </a>
+                            <table id="order-listing" class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>Account Number</th>
+                                        <th>Pin Code</th>
+                                        <th>Client Full Name </th>
+                                        <th>Phone</th>
+                                        <th>Balance</th>
+                                       
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach (var client in Model)
+                                    {
+                                        <tr>
+                                            <td>@client.AccountNumber</td>
+                                            <td>@client.PinCode</td>
+                                            <td>@client.FirstName @client.LastName</td>
+                                            <td>@client.PhoneNumber</td>
+                                            <td>@client.Balance</td>
+                                         
+                                      
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -21,45 +21,43 @@ namespace BankSystem.Controllers
             return View();
         }
 
+        #region  List
+
         public IActionResult List()
         {
             var clients = _clientService.GetAllClients();
             return View(clients);
         }
 
-        #region Update
+        #endregion
 
+        #region Find Client
 
         [HttpGet]
-        public IActionResult Update(int clientId)
+        public IActionResult FindClient()
         {
-            var client = _clientService.GetClientById(clientId);
-            if (client == null)
-            {
-                TempData["ErrorMessage"] = "Client not found.";
-                return RedirectToAction("ErrorPage");
-            }
-            return View(client);
+            return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Update(TbClient client)
+        public IActionResult FindClient(string accountNumber)
         {
-            try
+            if (string.IsNullOrWhiteSpace(accountNumber))
             {
-                if (!ModelState.IsValid)
-                    return View(client);
+                ModelState.AddModelError("", "Please enter an account number.");
+                return View();
+            }
 
-                _clientService.Update(client);
-                return RedirectToAction("List");
-            }
-            catch (Exception ex)
+            var client = _clientService.FindByAccountNumber(accountNumber);
+            if (client == null)
             {
-                _logger.LogError(ex, $"Error updating client {client.ClientId}");
-                TempData["ErrorMessage"] = "An error occurred while updating the client.";
-                return RedirectToAction("ErrorPage");
+                ModelState.AddModelError("", "Client not found.");
+                return View();
             }
+
+           
+            return View(client);
         }
 
         #endregion
@@ -107,14 +105,73 @@ namespace BankSystem.Controllers
 
         #endregion
 
-        #region  Delete
+        #region Update
 
-        public IActionResult ClientDelete(int clientId)
+
+        [HttpGet]
+        public IActionResult Update(int clientId)
+        {
+            var client = _clientService.GetClientById(clientId);
+            if (client == null)
+            {
+                TempData["ErrorMessage"] = "Client not found.";
+                return RedirectToAction("ErrorPage");
+            }
+            return View(client);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult Update(TbClient client)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                    return View(client);
+
+                _clientService.Update(client);
+                return RedirectToAction("UpdateConfirmation", new { clientId = client.ClientId });
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, $"Error updating client {client.ClientId}");
+                TempData["ErrorMessage"] = "An error occurred while updating the client.";
+                return RedirectToAction("ErrorPage");
+            }
+        }
+        [HttpGet]
+        public IActionResult UpdateConfirmation(int clientId)
+        {
+            var client = _clientService.GetClientById(clientId);
+            return View(client);
+        }
+
+        #endregion
+
+
+        #region Delete
+
+        [HttpGet]
+        public IActionResult Delete(int clientId)
+        {
+            var client = _clientService.GetClientById(clientId);
+            if (client == null)
+            {
+                TempData["ErrorMessage"] = "Client not found.";
+                return RedirectToAction("ErrorPage");
+            }
+
+            return View(client); 
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteConfirmed(int clientId)
         {
             try
             {
                 _clientService.ClientDelete(clientId);
-                return RedirectToAction("List");
+                return RedirectToAction("DeleteConfirmation", new { clientId });
             }
             catch (Exception ex)
             {
@@ -124,16 +181,15 @@ namespace BankSystem.Controllers
             }
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int clientId)
+        [HttpGet]
+        public IActionResult DeleteConfirmation(int clientId)
         {
-            _clientService.ClientDelete(clientId);
-            return RedirectToAction("DeleteConfirmation", new { clientId });
+            var client = _clientService.GetClientById(clientId);
+            return View(client);
         }
 
-
         #endregion
+
 
         #region  Look Up For Update
 

@@ -1,0 +1,14 @@
+﻿@model Domain.TbClient
+
+<h2>Client Deleted Successfully</h2>
+
+@if (Model != null)
+{
+    <p>Client <strong>@Model.FullName()</strong> has been deleted successfully.</p>
+}
+else
+{
+    <p>The client record has been deleted successfully.</p>
+}
+
+<a asp-action="List" class="btn btn-primary">Back to List</a>

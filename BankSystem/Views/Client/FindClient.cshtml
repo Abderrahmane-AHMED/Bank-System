@@ -1,0 +1,62 @@
+﻿@model Domain.TbClient
+
+@{
+    ViewData["Title"] = "Find Client by Account Number";
+}
+
+<h2>Find Client by Account Number</h2>
+
+<form asp-action="FindClient" method="post" class="mb-4">
+    @Html.AntiForgeryToken()
+    <div class="form-group">
+        <label for="accountNumber">Account Number</label>
+        <input type="text" name="accountNumber" class="form-control" placeholder="Enter Account Number" />
+    </div>
+    <button type="submit" class="btn btn-primary mt-2">Search</button>
+</form>
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="text-danger mt-2">
+        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+        {
+            <p>@error.ErrorMessage</p>
+        }
+    </div>
+}
+
+@if (Model != null && Model.ClientId > 0)
+{
+    <hr />
+    <h3>Client Details</h3>
+    <table class="table table-bordered">
+        <tr>
+            <th>Client ID</th>
+            <td>@Model.ClientId</td>
+        </tr>
+        <tr>
+            <th>Account Number</th>
+            <td>@Model.AccountNumber</td>
+        </tr>
+        <tr>
+            <th>Full Name</th>
+            <td>@Model.FullName()</td>
+        </tr>
+        <tr>
+            <th>Phone Number</th>
+            <td>@Model.PhoneNumber</td>
+        </tr>
+        <tr>
+            <th>Balance</th>
+            <td>@Model.Balance</td>
+        </tr>
+        <tr>
+            <th>PIN Code</th>
+            <td>@Model.PinCode</td>
+        </tr>
+    </table>
+
+    <a asp-action="Update" asp-route-clientId="@Model.ClientId" class="btn btn-warning">Update</a>
+    <a asp-action="Delete" asp-route-clientId="@Model.ClientId" class="btn btn-danger">Delete</a>
+    <a asp-action="List" class="btn btn-secondary">Back to List</a>
+}

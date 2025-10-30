@@ -1,0 +1,12 @@
+﻿@model Domain.TbClient
+
+<h2>Delete Client</h2>
+
+<p>Are you sure you want to delete client <strong>@Model.FullName()</strong>?</p>
+
+<form asp-action="DeleteConfirmed" method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="clientId" value="@Model.ClientId" />
+    <button type="submit" class="btn btn-danger">Yes, Delete</button>
+    <a asp-action="List" class="btn btn-secondary">Cancel</a>
+</form>

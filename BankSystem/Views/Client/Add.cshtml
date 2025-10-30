@@ -1,0 +1,70 @@
+﻿@model TbClient
+
+<div class="content-wrapper">
+    <div class="page-header">
+        <h3 class="page-title"> Add Client Form </h3>
+        <nav aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a asp-controller="Client" asp-action="List">Back</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Form elements</li>
+            </ol>
+        </nav>
+    </div>
+
+
+    <form class="forms-sample" method="post" enctype="multipart/form-data"
+          asp-controller="Client" asp-action="Add" role="form">
+
+        <input type="hidden" asp-for="ClientId" />
+
+        <div class="form-group">
+            <label>Account Number</label>
+            <input asp-for="AccountNumber" class="form-control" placeholder="Enter Account Number" />
+            <span asp-validation-for="AccountNumber" class="text-danger"></span>
+        </div>
+
+     
+
+        <div class="form-group">
+            <label>First Name</label>
+            <textarea asp-for="FirstName" class="form-control" placeholder="Enter First Name"></textarea>
+            <span asp-validation-for="FirstName" class="text-danger"></span>
+        </div>
+
+
+        <div class="form-group">
+            <label>List Name</label>
+            <textarea asp-for="LastName" class="form-control" placeholder="Enter Last Name"></textarea>
+            <span asp-validation-for="LastName" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label>Pin Code</label>
+            <textarea asp-for="PinCode" class="form-control" placeholder="Enter Pin Code"></textarea>
+            <span asp-validation-for="PinCode" class="text-danger"></span>
+        </div>
+
+
+        <div class="form-group">
+            <label>Phone</label>
+            <textarea asp-for="PhoneNumber" class="form-control" placeholder="Enter Phone Number"></textarea>
+            <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+        </div>
+
+
+        <div class="form-group">
+            <label>Balance</label>
+            <textarea asp-for="Balance" class="form-control" placeholder="Enter Balance"></textarea>
+            <span asp-validation-for="Balance" class="text-danger"></span>
+        </div>
+
+
+   
+        <button type="submit" class="btn btn-primary">Add New </button>
+    </form>
+</div>
+
+
+
+
+

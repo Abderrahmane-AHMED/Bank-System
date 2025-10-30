@@ -1,6 +1,10 @@
 
+using BusinessLogic.Services;
 using DataAccess.DbContext.Data;
+using DataAccess.Repositories;
 using Domain;
+using Interfaces.Repositories;
+using Interfaces.Services;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -26,6 +30,22 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 
 builder.Services.AddControllersWithViews();
 
+
+
+
+
+#region Custom Repositories 
+
+builder.Services.AddScoped<IClient, ClientRepository>();
+#endregion
+
+
+
+#region Coustom Services
+
+
+builder.Services.AddScoped<IClientService, ClientService>();
+#endregion
 
 
 

@@ -5,7 +5,7 @@ namespace BankSystem.Controllers
     public class ApplicationController : Controller
     {
 
-        public IActionResult index()
+        public IActionResult Index()
         {
             return View();
         }
