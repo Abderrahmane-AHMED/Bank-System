@@ -363,7 +363,130 @@ ul {
      End Header
 ================================= */
 
+/* ===============================
+     Start Login
+================================= */
 
+.login {
+    min-height: 100vh;
+    display: flex;
+    flex-wrap: wrap;
+    padding-bottom: 50px;
+}
+
+    .login .image {
+        background-image: url("'../lib/images/ApplicationPage (2).png'");
+        background-size: cover;
+        color: white;
+        flex-basis: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        z-index: 1;
+        animation: change-background 10s linear infinite;
+    }
+
+        .login .image::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #ececec;
+            transform: skewY(-6deg);
+            z-index: -1;
+        }
+
+@media (max-width: 991px) {
+    .login .image {
+        flex-basis: 100%;
+    }
+}
+
+.login .form {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-basis: 40%;
+}
+
+@media (max-width: 991px) {
+    .login .form {
+        flex-basis: 100%;
+    }
+}
+
+.login .form .input /*:not(:last-of-type) */ {
+    display: block;
+    width: 100%;
+    margin-bottom: 20px;
+    padding: 20px;
+    border: none;
+    border-bottom: 1px solid #caca;
+    background-color: #f9f9f9;
+    caret-color: #cacfd2;
+}
+
+.form-check-input-label {
+    padding-right: 250px;
+    margin-bottom: 20px;
+}
+
+.form-check-input {
+    border-color: #cacfd2 !important;
+    background-color: #cacfd2 !important;
+}
+
+.login .form [type="button"] {
+    display: block;
+    width: 100%;
+    padding: 15px;
+    background-color: #ececec;
+    color: black;
+    font-weight: bold;
+    font-size: 20px;
+    border: none;
+    cursor: pointer;
+    transition: var(--main-transition);
+}
+
+    .login .form [type="button"]:hover {
+        background-color: #cacfd2;
+    }
+
+.login .content {
+    text-align: center;
+    padding: 20px;
+}
+
+    .login .content h2 {
+        font-size: 40px;
+        letter-spacing: -2px;
+        line-height: 1.6;
+        min-height: calc(10vh );
+        color: black;
+        max-width: 350px;
+    }
+
+    .login .content P {
+        font-size: 38px;
+        letter-spacing: -2px;
+        line-height: 1.6;
+        min-height: calc(10vh );
+        color: #0C090A;
+        max-width: 350px;
+    }
+
+    .login .content img {
+        width: 200px;
+        max-width: 100%;
+    }
+
+/* ===============================
+     End Login
+================================= */
 
 /* ===============================
       Start Landing 

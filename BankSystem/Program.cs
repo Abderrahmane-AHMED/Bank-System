@@ -5,6 +5,9 @@ using DataAccess.Repositories;
 using Domain;
 using Interfaces.Repositories;
 using Interfaces.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 
 
@@ -12,6 +15,16 @@ using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
+#region Cookies
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+.AddCookie(options =>
+{
+    options.LoginPath = "/Account/Login";
+    options.AccessDeniedPath = "/Account/AccessDenied";
+    options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+});
+#endregion
 
 
 #region Entity FrameWork
@@ -19,8 +32,29 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddDbContext<BankSystemContext>(options =>
 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
+{
+    options.Password.RequiredLength = 8;
+    options.Password.RequireNonAlphanumeric = true;
+    options.Password.RequireUppercase = true;
+    options.User.RequireUniqueEmail = true;
+    options.SignIn.RequireConfirmedEmail = true;
 
+}).AddEntityFrameworkStores<BankSystemContext>()
+.AddDefaultTokenProviders();
 #endregion
+
+
+
+#region Email Sender
+
+var emailAddress = builder.Configuration["Email:Address"];
+var emailPassword = builder.Configuration["Email:Password"];
+
+builder.Services.AddScoped<IEmailSender>(provider =>
+    new GmailEmailSender(emailAddress, emailPassword));
+#endregion
+
 
 var password = Environment.GetEnvironmentVariable("DB_PASSWORD");
 
@@ -36,6 +70,7 @@ builder.Services.AddControllersWithViews();
 
 #region Custom Repositories 
 
+builder.Services.AddScoped<IAccount, AccountRepository>();
 builder.Services.AddScoped<IClient, ClientRepository>();
 #endregion
 
@@ -43,7 +78,7 @@ builder.Services.AddScoped<IClient, ClientRepository>();
 
 #region Coustom Services
 
-
+builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IClientService, ClientService>();
 #endregion
 

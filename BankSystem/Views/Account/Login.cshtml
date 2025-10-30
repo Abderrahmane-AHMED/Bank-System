@@ -1,0 +1,80 @@
+﻿@model BankSystem.Models.UserModel
+
+
+@{
+    Layout = null;
+}
+
+
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Login </title>
+    <script type="importmap"></script>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/Styles.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/css/normarlize.css" asp-append-version="true" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="~/DrivingLicense.styles.css" asp-append-version="true" />
+</head>
+
+<!-- breadcrumb start -->
+
+
+<!-- Start Login -->
+
+<div class="login" id="login">
+    <div class="image">
+        <div class="content">
+
+            <img decoding="async" src="~/lib/images/ApplicationPage (1).png" alt="" />
+
+            <h2>WELCOM TO </h2>
+            <P>Alwasset Bank System</P>
+
+
+        </div>
+    </div>
+    <div class="form">
+        <div class="content">
+            <h2>Login Your Account </h2>
+            @if (ViewData.ModelState.Count > 0)
+            {
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+                        {
+                            <li>@error.ErrorMessage</li>
+                        }
+                    </ul>
+                </div>
+            }
+            <form method="post"
+                  asp-controller="Users" asp-action="Login"
+                  class="theme-form">
+
+
+                <input asp-for="Email" type="text" class="input" id="Email" placeholder="User Name" />
+
+                <input asp-for="Password" type="password" class="input" id="Password" placeholder="Password" />
+
+                <button   type="submit" class="btn btn-primary">Login</button>
+
+            </form>
+        </div>
+    </div>
+ </div>
+        
+
+<!--Section ends-->
+
+                 
+
+
+
+       
+      
