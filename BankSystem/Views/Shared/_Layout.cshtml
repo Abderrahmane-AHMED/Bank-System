@@ -1,0 +1,86 @@
+﻿
+
+<!DOCTYPE html>
+
+
+
+<head>
+
+
+
+
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<title>@ViewData["Title"] - Bank System</title>
+	<script type="importmap"></script>
+	<link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+	<link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/css/Styles.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/css/slick.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/css/slick-theme.css" asp-append-version="true" />
+	<link rel="stylesheet" href="~/css/normarlize.css" asp-append-version="true" />
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Work+Sans&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="~/DrivingLicense.styles.css" asp-append-version="true" />
+</head>
+
+<body>
+	<!-- Start Header -->
+	<div class="header" id="header">
+		<div class="container">
+			<a href="~/Home/Index" class="logo">Bank System</a>
+			<ul class="main-nav">
+
+
+
+				<li>
+
+					<!-- Start Megamenu -->
+					<div class="header-account">
+						<span class="account-title">My Account</span>
+						<ul>
+							<li><a asp-controller="Account" asp-action="Login">Login</a></li>
+						</ul>
+					</div>
+					<!-- End Megamenu -->
+				</li>
+			</ul>
+		</div>
+	</div>
+	<!-- End Header -->
+	<!-- Start Main Content -->
+	<div class="content">
+		@RenderBody()
+	</div>
+	<!-- End Main Content -->
+	<!-- Start Footer -->
+	<footer class="border-top footer text-muted">
+		<div class="container">
+			&copy; 2025 - Bank System -
+			<a asp-controller="Application" asp-action="index">Main Menue</a>
+		</div>
+	</footer>
+
+	<!-- End Footer -->
+	@inject Microsoft.AspNetCore.Hosting.IWebHostEnvironment Env
+
+
+
+
+
+
+	<script src="~/lib/jquery/dist/jquery.min.js"></script>
+	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="~/js/site.js" asp-append-version="true"></script>
+	<script src="~/js/slick.js" asp-append-version="true"></script>
+	<script src="~/js/slick.min.js" asp-append-version="true"></script>
+
+	<script src="~/Admin/vendors/js/vendor.bundle.base.js"></script>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.3/jquery.validate.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/3.2.12/jquery.validate.unobtrusive.min.js"></script>
+	<!-- End custom js for this page -->
+	@await RenderSectionAsync("Scripts", required: false)
+
+</body>
