@@ -27,6 +27,7 @@ namespace BankSystem.Controllers
             return View(clients);
         }
 
+        #region Update
 
 
         [HttpGet]
@@ -60,6 +61,9 @@ namespace BankSystem.Controllers
                 return RedirectToAction("ErrorPage");
             }
         }
+
+        #endregion
+
 
         #region   Add 
 

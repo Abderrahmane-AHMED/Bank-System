@@ -1,5 +1,7 @@
 
-
+using DataAccess.DbContext.Data;
+using Domain;
+using Microsoft.EntityFrameworkCore;
 
 
 
@@ -8,6 +10,13 @@ var builder = WebApplication.CreateBuilder(args);
 
 
 
+#region Entity FrameWork
+
+builder.Services.AddDbContext<BankSystemContext>(options =>
+options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+
+#endregion
 
 var password = Environment.GetEnvironmentVariable("DB_PASSWORD");
 
