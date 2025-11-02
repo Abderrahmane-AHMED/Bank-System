@@ -1,0 +1,23 @@
+﻿@{
+    ViewData["Title"] = "Find Client to Deposit";
+}
+
+<h2>Find Client to Deposit</h2>
+
+<form asp-action="LookupForDeposit" method="post">
+    <div class="form-group">
+        <label for="accountNumber">Account Number</label>
+        <input type="text" name="accountNumber" class="form-control" placeholder="Enter Account Number" />
+    </div>
+    <button type="submit" class="btn btn-primary mt-2">Search</button>
+</form>
+
+@if (!ViewData.ModelState.IsValid)
+{
+    <div class="text-danger">
+        @foreach (var error in ViewData.ModelState.Values.SelectMany(v => v.Errors))
+        {
+            <p>@error.ErrorMessage</p>
+        }
+    </div>
+}

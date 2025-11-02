@@ -46,6 +46,9 @@ namespace BusinessLogic.Services
             if (client != null)
                 _clientRepository.ClientDelete(client);
         }
+        public void ClientDeposit(int clientId, decimal amount) => _clientRepository.ClientDeposit(clientId , amount);
+
+        public void ClientWithdraw(int clientId, decimal amount) => _clientRepository.ClientWithdraw(clientId, amount);
 
     }
 }

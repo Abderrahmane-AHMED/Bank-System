@@ -18,6 +18,10 @@ namespace Interfaces.Services
         void Update(TbClient client);
         void ClientDelete(int clientId);
 
+        void ClientDeposit(int clientId, decimal amount);
+
+        void ClientWithdraw(int clientId, decimal amount);
+
 
     }
 }

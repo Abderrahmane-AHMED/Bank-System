@@ -19,5 +19,11 @@ namespace Interfaces.Repositories
         void Update(TbClient client);
 
         void ClientDelete(TbClient clientId);
+
+        void ClientDeposit(int clientId, decimal amount);
+
+        void ClientWithdraw(int clientId, decimal amount);
+
+
     }
 }
