@@ -1,4 +1,4 @@
-﻿
+﻿@inject SignInManager<ApplicationUser> sinInManager
 
 <!DOCTYPE html>
 
@@ -40,7 +40,17 @@
 					<div class="header-account">
 						<span class="account-title">My Account</span>
 						<ul>
-							<li><a asp-controller="Account" asp-action="Login">Login</a></li>
+							@if (sinInManager.IsSignedIn(User))
+							{
+
+
+								<li><a asp-controller="Account" asp-action="LogOut">Logout</a></li>
+							}
+							else
+							{
+								<li><a asp-controller="Account" asp-action="Login">Login</a></li>
+							}
+
 						</ul>
 					</div>
 					<!-- End Megamenu -->

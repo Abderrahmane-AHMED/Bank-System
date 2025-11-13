@@ -130,7 +130,7 @@ namespace BankSystem.Controllers
 
         #region ConfirmEmailSuccess
 
-        public async Task<IActionResult> ConfirmEmailSuccess(string userId, string token)
+        public async Task<IActionResult> ConfirmEmail(string userId, string token)
         {
             if (userId == null || token == null)
                 return RedirectToAction("Index", "Home");
@@ -141,7 +141,7 @@ namespace BankSystem.Controllers
             var result = await _userManager.ConfirmEmailAsync(user, token);
 
             if (result.Succeeded)
-                return View("ConfirmEmailSuccess");
+                return View("ConfirmEmail");
             else
                 return View("Error");
         }

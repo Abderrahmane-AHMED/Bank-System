@@ -1,0 +1,46 @@
+﻿@{
+    ViewData["Title"] = "Transaction - TransactionMenueScreen";
+}
+
+<!-- Start Application -->
+
+<div class="Application-page" id="Application-page">
+
+    <div class="container">
+        <h2 class="title"> Transaction </h2>
+        <img decoding="async" src="~/lib/images\ApplicationPage (1).png" alt="" class="image" />
+        <div class="info">
+            <div class="box">
+                <img decoding="async" src="~/lib/images/list-removebg-preview.png" alt="" />
+                <div class="text">
+                    <h3>
+                        <a asp-controller="Client" asp-action="List">Show Clinent List</a>
+                    </h3>
+
+                </div>
+            </div>
+            <div class="box">
+                <img decoding="async" src="~/lib/images/Deposit.png" alt="" />
+                <div class="text">
+                    <h3>
+                        <a asp-controller="Transaction" asp-action="LookupForDeposit"> Clinent Deposit</a>
+                    </h3>
+
+                </div>
+            </div>
+            <div class="box">
+                <img decoding="async" src="~/lib/images/withdrow.png" alt="" />
+                <div class="text">
+                    <h3>
+                        <a asp-controller="Transaction" asp-action="LookupForWithdraw">Clinent Withdraw</a>
+                    </h3>
+
+                </div>
+            </div>
+        
+
+        </div>
+    </div>
+</div>
+
+<!-- End Application -->

@@ -1,0 +1,16 @@
+﻿@{
+    ViewData["Title"] = "Error";
+}
+
+<h2 class="text-danger">An error occurred</h2>
+
+@if (ViewBag.ErrorMessage != null)
+{
+    <p>@ViewBag.ErrorMessage</p>
+}
+else
+{
+    <p>Something went wrong. Please try again later.</p>
+}
+
+<a asp-action="TransactionMenueScreen" class="btn btn-primary mt-3">Back to Menu</a>
