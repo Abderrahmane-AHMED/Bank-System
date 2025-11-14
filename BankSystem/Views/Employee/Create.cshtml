@@ -1,0 +1,30 @@
+﻿@using Domain.Enums
+
+<h2>Add Employee</h2>
+
+<form method="post">
+    <div class="mb-3">
+        <label>Username</label>
+        <input type="text" name="username" class="form-control" required />
+    </div>
+
+    <div class="mb-3">
+        <label>Password</label>
+        <input type="password" name="password" class="form-control" required />
+    </div>
+
+    <h4>Permissions</h4>
+    <div class="mb-3">
+        @foreach (var p in Enum.GetValues(typeof(UserPermissions)))
+        {
+            if ((int)p == 0) continue;
+            <div class="form-check">
+                <input type="checkbox" name="permissions" value="@((int)p)" class="form-check-input" id="@p" />
+                <label class="form-check-label" for="@p">@p</label>
+            </div>
+        }
+    </div>
+
+    <button type="submit" class="btn btn-success">Save</button>
+    <a href="@Url.Action("Index", "Employee")" class="btn btn-secondary">Cancel</a>
+</form>

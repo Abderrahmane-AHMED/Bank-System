@@ -1,7 +1,8 @@
-﻿using Domain;
+﻿using DataAccess.DbContext.Configuration;
+using Domain;
+using Interfaces.Repositories;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using DataAccess.DbContext.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,8 +24,8 @@ namespace DataAccess.DbContext.Data
 
         }
 
-        public virtual DbSet<TbClient> Clients { get; set; }    
-
+        public virtual DbSet<TbClient> Clients { get; set; }
+        public virtual DbSet<TbEmployee> Employees { get; set; }
 
 
 

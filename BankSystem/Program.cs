@@ -2,6 +2,7 @@
 using BusinessLogic.Services;
 using DataAccess.DbContext.Data;
 using DataAccess.Repositories;
+using DataAccess.Repository;
 using Domain;
 using Interfaces.Repositories;
 using Interfaces.Services;
@@ -72,6 +73,7 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.AddScoped<IAccount, AccountRepository>();
 builder.Services.AddScoped<IClient, ClientRepository>();
+builder.Services.AddScoped<IEmployee, EmployeeRepository>();
 #endregion
 
 
@@ -80,6 +82,7 @@ builder.Services.AddScoped<IClient, ClientRepository>();
 
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IClientService, ClientService>();
+builder.Services.AddScoped<IEmployeeService, EmployeeService>();
 #endregion
 
 
