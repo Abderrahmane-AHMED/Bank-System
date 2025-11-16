@@ -1,5 +1,4 @@
-
-using BusinessLogic.Services;
+﻿using BusinessLogic.Services;
 using DataAccess.DbContext.Data;
 using DataAccess.Repositories;
 using DataAccess.Repository;
@@ -11,27 +10,29 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.EntityFrameworkCore;
 
-
-
-
 var builder = WebApplication.CreateBuilder(args);
 
-#region Cookies
+#region Authentication + Cookies
 
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-.AddCookie(options =>
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Account/Login";
+        options.AccessDeniedPath = "/Account/AccessDenied";
+        options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+    });
+
+builder.Services.AddControllersWithViews(options =>
 {
-    options.LoginPath = "/Account/Login";
-    options.AccessDeniedPath = "/Account/AccessDenied";
-    options.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+    options.Filters.Add(new Microsoft.AspNetCore.Mvc.Authorization.AuthorizeFilter());
 });
+
 #endregion
 
-
-#region Entity FrameWork
+#region Entity Framework
 
 builder.Services.AddDbContext<BankSystemContext>(options =>
-options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 {
@@ -41,52 +42,37 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
     options.User.RequireUniqueEmail = true;
     options.SignIn.RequireConfirmedEmail = true;
 
-}).AddEntityFrameworkStores<BankSystemContext>()
+})
+.AddEntityFrameworkStores<BankSystemContext>()
 .AddDefaultTokenProviders();
+
 #endregion
 
-
-
-#region Email Sender
+#region Email Sender  (يجب أن يكون قبل الخدمات)
 
 var emailAddress = builder.Configuration["Email:Address"];
 var emailPassword = builder.Configuration["Email:Password"];
 
 builder.Services.AddScoped<IEmailSender>(provider =>
     new GmailEmailSender(emailAddress, emailPassword));
+
 #endregion
 
-
-var password = Environment.GetEnvironmentVariable("DB_PASSWORD");
-
-
-var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-
-
-builder.Services.AddControllersWithViews();
-
-
-
-
-
-#region Custom Repositories 
+#region Repositories
 
 builder.Services.AddScoped<IAccount, AccountRepository>();
 builder.Services.AddScoped<IClient, ClientRepository>();
 builder.Services.AddScoped<IEmployee, EmployeeRepository>();
+
 #endregion
 
-
-
-#region Coustom Services
+#region Services
 
 builder.Services.AddScoped<IAccountService, AccountService>();
 builder.Services.AddScoped<IClientService, ClientService>();
 builder.Services.AddScoped<IEmployeeService, EmployeeService>();
+
 #endregion
-
-
-
 
 builder.Services.AddSession();
 builder.Services.AddHttpContextAccessor();
@@ -101,18 +87,9 @@ builder.Services.AddCors(options =>
             .AllowAnyHeader());
 });
 
-
-
-
-
-
-
 builder.Services.AddLogging();
 
 var app = builder.Build();
-
-
-
 
 if (!app.Environment.IsDevelopment())
 {
@@ -131,24 +108,12 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 
-
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseSession();
 
-#region Routing
-
-
-
 app.MapControllerRoute(
     name: "default",
-    pattern: "{Controller=Home}/{action=Index}/{id?}");
-
-#endregion
-
-
-
+    pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
-
-

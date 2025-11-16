@@ -21,7 +21,10 @@ namespace BankSystem.Controllers
             _emailSender = emailSender;
         }
 
-       
+         public IActionResult ManageEmployees()
+        {
+            return View();
+        }
 
         #region Register
 

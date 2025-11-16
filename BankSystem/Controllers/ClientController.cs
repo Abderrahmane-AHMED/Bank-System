@@ -1,11 +1,16 @@
 ﻿
 
+using BankSystem.Helpers;
 using Domain;
+using Domain.Enums;
 using Interfaces.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BankSystem.Controllers
 {
+    [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
     public class ClientController : Controller
     {
         private readonly IClientService _clientService;
@@ -65,17 +70,23 @@ namespace BankSystem.Controllers
 
         #region   Add 
 
-        [HttpGet]
+      
         public IActionResult Add()
         {
+            if (!PermissionHelper.HasPermission(User, UserPermissions.NewClient))
+                return RedirectToAction("AccessDenied", "Account");
+
             return View(new TbClient());
         }
 
+
+      
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Add(TbClient client)
         {
-
+            if (!PermissionHelper.HasPermission(User, UserPermissions.NewClient))
+                return RedirectToAction("AccessDenied", "Account");
             try
             {
                 if (!ModelState.IsValid)
@@ -93,7 +104,7 @@ namespace BankSystem.Controllers
                     return View("Update", client);
                 }
                 _clientService.Add(client);
-                return RedirectToAction("List");
+                return RedirectToAction("Index" , "Application");
             }
             catch (Exception ex)
             {
@@ -111,6 +122,9 @@ namespace BankSystem.Controllers
         [HttpGet]
         public IActionResult Update(int clientId)
         {
+            if (!PermissionHelper.HasPermission(User, UserPermissions.UpdateClients))
+                return RedirectToAction("AccessDenied", "Account");
+
             var client = _clientService.GetClientById(clientId);
             if (client == null)
             {
@@ -124,6 +138,9 @@ namespace BankSystem.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Update(TbClient client)
         {
+            if (!PermissionHelper.HasPermission(User, UserPermissions.UpdateClients))
+                return RedirectToAction("AccessDenied", "Account");
+
             try
             {
                 if (!ModelState.IsValid)

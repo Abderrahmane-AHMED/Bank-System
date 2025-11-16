@@ -1,4 +1,4 @@
-﻿@inject SignInManager<ApplicationUser> sinInManager
+﻿@inject SignInManager<ApplicationUser> signInManager
 
 <!DOCTYPE html>
 
@@ -40,17 +40,19 @@
 					<div class="header-account">
 						<span class="account-title">My Account</span>
 						<ul>
-							@if (sinInManager.IsSignedIn(User))
+							@{
+								bool isEmployee = User.HasClaim("IsEmployee", "true");
+								bool isUser = signInManager.IsSignedIn(User);
+							}
+
+							@if (isUser || isEmployee)
 							{
-
-
 								<li><a asp-controller="Account" asp-action="LogOut">Logout</a></li>
 							}
 							else
 							{
 								<li><a asp-controller="Account" asp-action="Login">Login</a></li>
 							}
-
 						</ul>
 					</div>
 					<!-- End Megamenu -->
@@ -67,8 +69,7 @@
 	<!-- Start Footer -->
 	<footer class="border-top footer text-muted">
 		<div class="container">
-			&copy; 2025 - Bank System -
-			<a asp-controller="Application" asp-action="index">Main Menue</a>
+			&copy; 2025 - Bank System 
 		</div>
 	</footer>
 

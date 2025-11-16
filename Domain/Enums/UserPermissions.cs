@@ -17,7 +17,8 @@ namespace Domain.Enums
         Transactions = 16,
         FindClient = 32,
         ManageUsers = 64,
-       
+        ManageEmployees = 128,
+
     }
    
 }

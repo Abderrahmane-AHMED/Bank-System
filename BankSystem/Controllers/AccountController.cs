@@ -1,11 +1,14 @@
-﻿using Domain;
-using Interfaces.Services;
-using BankSystem.Models;
+﻿using BankSystem.Models;
 using BankSystem.ViewModels;
+using Domain;
+using Interfaces.Services;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 using System.Threading.Tasks;
 
 namespace BankSystem.Controllers
@@ -16,16 +19,18 @@ namespace BankSystem.Controllers
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IEmailSender _emailSender;
         private readonly IClientService _clientService;
+        private readonly IEmployeeService _employeeService;
         private readonly ILogger<AccountController> _logger;
 
         public AccountController(UserManager<ApplicationUser> userManager,
                                  SignInManager<ApplicationUser> signInManager,
-                                 IEmailSender emailSender , IClientService clientService, ILogger<AccountController> logger)
+                                 IEmailSender emailSender , IClientService clientService, IEmployeeService employeeService, ILogger<AccountController> logger)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _emailSender = emailSender;
             _clientService = clientService;
+            _employeeService = employeeService;
             _logger = logger;
         }
 
@@ -37,31 +42,74 @@ namespace BankSystem.Controllers
 
         [HttpPost]
         [AllowAnonymous]
-        public async Task<IActionResult> Login(string email, string password, string? returnUrl = null)
+        public async Task<IActionResult> Login(string identifier, string password, string? returnUrl = null)
         {
-            if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(password))
+            if (string.IsNullOrEmpty(identifier) || string.IsNullOrEmpty(password))
             {
-                ModelState.AddModelError("", "Incorrect Email or Password.");
+                ModelState.AddModelError("", "Incorrect Username/Email or Password.");
                 return View();
             }
 
-            var user = await _userManager.FindByEmailAsync(email);
-            if (user == null)
+            // ======== 1- محاولة تسجيل الدخول كـ ApplicationUser ========
+            // المستخدمين العاديين يسجلون بـ Email
+            var user = await _userManager.FindByEmailAsync(identifier);
+
+            if (user != null)
             {
-                ModelState.AddModelError("", "Incorrect Email or Password.");
-                return View();
+                var result = await _signInManager.PasswordSignInAsync(user.UserName, password, true, false);
+
+                if (result.Succeeded)
+                {
+                    // مستخدم عادي
+                    return Redirect(returnUrl ?? "/");
+                }
             }
 
-            var result = await _signInManager.PasswordSignInAsync(user.UserName, password, true, false);
-            if (result.Succeeded)
+            // ======== 2- محاولة تسجيل الدخول كموظف Employee ========
+            // الموظفون يسجلون بـ Username
+            var emp = _employeeService.GetByUsername(identifier);
+
+            if (emp != null)
             {
-                return Redirect(returnUrl ?? "/");
+                if (!BCrypt.Net.BCrypt.Verify(password, emp.PasswordHash))
+                {
+                    ModelState.AddModelError("", "Incorrect Username/Email or Password.");
+                    return View();
+                }
+
+                // إنشاء Claims للموظف
+                var claims = new List<Claim>
+{
+    new Claim(ClaimTypes.Name, emp.Username),
+    new Claim("EmployeeId", emp.Id.ToString()),
+    new Claim("Permissions", ((int)emp.Permissions).ToString()),
+    new Claim("IsEmployee", "true")
+};
+
+                var identity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                var principal = new ClaimsPrincipal(identity);
+
+                await HttpContext.SignInAsync(
+                    CookieAuthenticationDefaults.AuthenticationScheme,
+                    principal,
+                    new AuthenticationProperties
+                    {
+                        IsPersistent = true,
+                        ExpiresUtc = DateTimeOffset.UtcNow.AddHours(2)
+                    });
+
+
+                // توجيه الموظف لصفحة النظام الخاصة بهم
+                return Redirect("/Application/Index");
             }
 
-            ModelState.AddModelError("", "Incorrect Email or Password.");
+            // ======== فشل الدخول ========
+            ModelState.AddModelError("", "Incorrect Username/Email or Password.");
             return View();
         }
 
+
+        [Authorize]
         public async Task<IActionResult> LogOut()
         {
             await _signInManager.SignOutAsync();

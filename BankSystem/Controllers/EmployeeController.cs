@@ -2,10 +2,13 @@
 using Domain;
 using Domain.Enums;
 using Interfaces.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace BankSystem.Controllers
 {
+    [Authorize(AuthenticationSchemes = CookieAuthenticationDefaults.AuthenticationScheme)]
     public class EmployeeController : Controller
     {
         
@@ -45,17 +48,32 @@ namespace BankSystem.Controllers
         }
 
         [HttpPost]
-        public IActionResult Edit(TbEmployee employee, int[] permissions)
+        public IActionResult Edit(TbEmployee employee, int[] permissions, string? newPassword)
         {
+            var oldEmp = _employeeService.GetById(employee.Id);
+            if (oldEmp == null) return NotFound();
+
+            
+            oldEmp.Username = employee.Username;
+
+           
             UserPermissions finalPerm = 0;
             foreach (var p in permissions)
                 finalPerm |= (UserPermissions)p;
+            oldEmp.Permissions = finalPerm;
 
-            employee.Permissions = finalPerm;
-            _employeeService.UpdateEmployee(employee);
+         
+            if (!string.IsNullOrEmpty(newPassword))
+            {
+                oldEmp.PasswordHash = BCrypt.Net.BCrypt.HashPassword(newPassword);
+            }
+
+            _employeeService.UpdateEmployee(oldEmp);
 
             return RedirectToAction("Index");
         }
+
+
 
         public IActionResult Delete(int id)
         {
