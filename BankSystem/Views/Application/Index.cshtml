@@ -10,18 +10,6 @@
         <img decoding="async" src="~/lib/images/ApplicationPage (1).png" alt="" class="image" />
         <div class="info">
 
-            @* Manage Employees *@
-            @if (PermissionHelper.HasPermission(User, UserPermissions.ManageUsers))
-            {
-                <div class="box">
-                    <img decoding="async" src="~/lib/images/ManageEmplo-removebg-preview.png" alt="" />
-                    <div class="text">
-                        <h3>
-                            <a asp-controller="User" asp-action="ManageEmployees">Manage Employees</a>
-                        </h3>
-                    </div>
-                </div>
-            }
 
             @* Transaction Menu *@
             @if (PermissionHelper.HasPermission(User, UserPermissions.Transactions))

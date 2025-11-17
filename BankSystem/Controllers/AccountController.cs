@@ -50,8 +50,7 @@ namespace BankSystem.Controllers
                 return View();
             }
 
-            // ======== 1- محاولة تسجيل الدخول كـ ApplicationUser ========
-            // المستخدمين العاديين يسجلون بـ Email
+       
             var user = await _userManager.FindByEmailAsync(identifier);
 
             if (user != null)
@@ -60,13 +59,11 @@ namespace BankSystem.Controllers
 
                 if (result.Succeeded)
                 {
-                    // مستخدم عادي
+                  
                     return Redirect(returnUrl ?? "/");
                 }
             }
 
-            // ======== 2- محاولة تسجيل الدخول كموظف Employee ========
-            // الموظفون يسجلون بـ Username
             var emp = _employeeService.GetByUsername(identifier);
 
             if (emp != null)
@@ -77,7 +74,7 @@ namespace BankSystem.Controllers
                     return View();
                 }
 
-                // إنشاء Claims للموظف
+              
                 var claims = new List<Claim>
 {
     new Claim(ClaimTypes.Name, emp.Username),
@@ -99,11 +96,11 @@ namespace BankSystem.Controllers
                     });
 
 
-                // توجيه الموظف لصفحة النظام الخاصة بهم
+         
                 return Redirect("/Application/Index");
             }
 
-            // ======== فشل الدخول ========
+          
             ModelState.AddModelError("", "Incorrect Username/Email or Password.");
             return View();
         }
@@ -211,8 +208,15 @@ namespace BankSystem.Controllers
         #endregion
 
 
-
         [HttpGet]
-        public IActionResult AccessDenied() => View();
+        public IActionResult AccessDenied()
+        {
+            ViewBag.ErrorMessage = TempData["ErrorMessage"]?.ToString();
+            return View();
+        }
+
+
+      
+        
     }
 }

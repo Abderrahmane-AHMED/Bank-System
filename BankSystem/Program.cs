@@ -48,7 +48,7 @@ builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
 
 #endregion
 
-#region Email Sender  (يجب أن يكون قبل الخدمات)
+#region Email Sender 
 
 var emailAddress = builder.Configuration["Email:Address"];
 var emailPassword = builder.Configuration["Email:Password"];

@@ -55,8 +55,16 @@
             <td>@Model.PinCode</td>
         </tr>
     </table>
-
-    <a asp-action="Update" asp-route-clientId="@Model.ClientId" class="btn btn-warning">Update</a>
-    <a asp-action="Delete" asp-route-clientId="@Model.ClientId" class="btn btn-danger">Delete</a>
-    <a asp-action="List" class="btn btn-secondary">Back to List</a>
+    @if (PermissionHelper.HasPermission(User, UserPermissions.UpdateClients ))
+    {
+        <a asp-action="Update" asp-route-clientId="@Model.ClientId" class="btn btn-warning">Update</a>
+    }
+    @if (PermissionHelper.HasPermission(User, UserPermissions.DeleteClient))
+    {
+        <a asp-action="Delete" asp-route-clientId="@Model.ClientId" class="btn btn-danger">Delete</a>
+    }
+    @if (PermissionHelper.HasPermission(User, UserPermissions.ListClients))
+    {
+        <a asp-action="List" class="btn btn-secondary">Back to List</a>
+    }
 }
