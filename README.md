@@ -72,4 +72,4 @@ Employees can only perform operations allowed by their assigned permissions:
 
 A short demonstration video of the application is available on LinkedIn:
 
-🔗 [![Watch the Demo](screenshots/demo-thumbnail.png)](https://www.linkedin.com/posts/abderrahmane-ahmed-69436438a_i-developed-a-bank-management-system-using-activity-7399386265630146560-LR5O?utm_source=share&utm_medium=member_desktop&rcm=ACoAAF_OCNABFBzIiLvo8ginXAVDM0vLth3w7cc)
+🔗 [![Watch the Demo](https://img.shields.io/badge/-LinkedIn-blue?style=flat-square&logo=linkedin&logoColor=white)](screenshots/demo-thumbnail.png)](https://www.linkedin.com/posts/abderrahmane-ahmed-69436438a_i-developed-a-bank-management-system-using-activity-7399386265630146560-LR5O?utm_source=share&utm_medium=member_desktop&rcm=ACoAAF_OCNABFBzIiLvo8ginXAVDM0vLth3w7cc)
